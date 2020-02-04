@@ -19,6 +19,7 @@ import net.osmand.plus.R;
 import net.osmand.plus.SettingsHelper.*;
 import net.osmand.plus.UiUtilities;
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.helpers.AndroidUiHelper;
 import net.osmand.plus.profiles.SelectProfileBottomSheetDialogFragment;
 import net.osmand.plus.profiles.SelectProfileBottomSheetDialogFragment.SelectProfileListener;
 import net.osmand.plus.settings.preferences.SwitchPreferenceEx;
@@ -88,9 +89,8 @@ public class MainSettingsFragment extends BaseSettingsFragment {
 				AndroidUtils.setBackground(selectedProfile, backgroundDrawable);
 			}
 		}
-		if (ApplicationMode.DEFAULT.getStringKey().equals(preference.getKey())) {
-			holder.findViewById(R.id.switchWidget).setVisibility(View.GONE);
-		}
+		boolean visible = !ApplicationMode.DEFAULT.getStringKey().equals(key);
+		AndroidUiHelper.updateVisibility(holder.findViewById(R.id.switchWidget), visible);
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class MainSettingsFragment extends BaseSettingsFragment {
 
 	private void setupConfigureProfilePref() {
 		ApplicationMode selectedMode = app.getSettings().APPLICATION_MODE.get();
-		String title = selectedMode.toHumanString(getContext());
+		String title = selectedMode.toHumanString();
 		String profileType = getAppModeDescription(getContext(), selectedMode);
 		int iconRes = selectedMode.getIconRes();
 		Preference configureProfile = findPreference(CONFIGURE_PROFILE);
@@ -181,7 +181,7 @@ public class MainSettingsFragment extends BaseSettingsFragment {
 			pref.setPersistent(false);
 			pref.setKey(applicationMode.getStringKey());
 			pref.setIcon(getAppProfilesIcon(applicationMode, isAppProfileEnabled));
-			pref.setTitle(applicationMode.toHumanString(getContext()));
+			pref.setTitle(applicationMode.toHumanString());
 			pref.setSummary(getAppModeDescription(getContext(), applicationMode));
 			pref.setChecked(isAppProfileEnabled);
 			pref.setLayoutResource(R.layout.preference_with_descr_dialog_and_switch);

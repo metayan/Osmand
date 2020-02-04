@@ -800,8 +800,8 @@
     <string name="poi_error_info_not_loaded">节点的信息未能加载</string>
     <string name="poi_dialog_other_tags_message">所有其他标记都已保留</string>
     <string name="edit_filter_delete_dialog_title">是否删除选中的过滤器？</string>
-    <string name="edit_filter_delete_message">过滤器 {0} 已被删除</string>
-    <string name="edit_filter_create_message">过滤器 {0} 已创建</string>
+    <string name="edit_filter_delete_message">过滤器 %1$s 已被删除</string>
+    <string name="edit_filter_create_message">过滤器 %1$s 已创建</string>
     <string name="av_camera_focus_auto">自动聚焦</string>
     <string name="clear_intermediate_points">清除中途点</string>
     <string name="keep_intermediate_points">保持中途点</string>
@@ -2798,7 +2798,7 @@
     <string name="download_map_dialog">下载地图对话框</string>
     <string name="suggested_maps">建议的地图</string>
     <string name="shared_string_turn_off">关闭</string>
-    <string name="distance_and_address">%1$s • %2$s</string>
+    <string name="ltr_or_rtl_combine_via_bold_point">%1$s • %2$s</string>
     <string name="select_navigation_icon">选择导航图标</string>
     <string name="select_map_icon">选择地图图标</string>
     <string name="delete_profiles_descr">在您点击“应用”后，已删除的配置将永久丢失。</string>

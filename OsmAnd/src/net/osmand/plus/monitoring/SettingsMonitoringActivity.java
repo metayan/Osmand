@@ -37,13 +37,13 @@ import net.osmand.plus.activities.SettingsBaseActivity;
 
 import java.util.Map;
 
-import static net.osmand.plus.OsmandSettings.DAILY_DIRECTORY;
 import static net.osmand.plus.OsmandSettings.MONTHLY_DIRECTORY;
 import static net.osmand.plus.OsmandSettings.REC_DIRECTORY;
-import static net.osmand.plus.profiles.SettingsProfileFragment.PROFILE_STRING_KEY;
-
 
 public class SettingsMonitoringActivity extends SettingsBaseActivity {
+
+	public static final String PROFILE_STRING_KEY = "string_key";
+
 	private CheckBoxPreference routeServiceEnabled;
 	private BroadcastReceiver broadcastReceiver;
 
@@ -155,11 +155,11 @@ public class SettingsMonitoringActivity extends SettingsBaseActivity {
 		cat.addPreference(createCheckBoxPreference(settings.SAVE_HEADING_TO_GPX, R.string.save_heading,
 				R.string.save_heading_descr));
 
-		Integer[] intValues = new Integer[]{REC_DIRECTORY, MONTHLY_DIRECTORY, DAILY_DIRECTORY};
+		Integer[] intValues = new Integer[]{REC_DIRECTORY, MONTHLY_DIRECTORY};
 		names = new String[intValues.length];
 		names[0] = getString(R.string.store_tracks_in_rec_directory);
 		names[1] = getString(R.string.store_tracks_in_monthly_directories);
-		names[2] = getString(R.string.store_tracks_in_daily_directories);
+//		names[2] = getString(R.string.store_tracks_in_daily_directories);
 		cat.addPreference(createListPreference(settings.TRACK_STORAGE_DIRECTORY, names, intValues,
 				R.string.track_storage_directory, R.string.track_storage_directory_descrp));
 	}
@@ -247,7 +247,7 @@ public class SettingsMonitoringActivity extends SettingsBaseActivity {
 	protected void showConfirmDialog(final String prefId, final Object newValue) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		String appModeName = selectedAppMode.toHumanString(this);
+		String appModeName = selectedAppMode.toHumanString();
 		String currentModeText = getString(R.string.apply_to_current_profile, appModeName);
 		int start = currentModeText.indexOf(appModeName);
 

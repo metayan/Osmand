@@ -38,6 +38,7 @@ import net.osmand.plus.SettingsHelper;
 import net.osmand.plus.SettingsHelper.ProfileSettingsItem;
 import net.osmand.plus.UiUtilities;
 import net.osmand.plus.activities.MapActivity;
+import net.osmand.plus.helpers.AndroidUiHelper;
 import net.osmand.plus.helpers.FontCache;
 import net.osmand.plus.openseamapsplugin.NauticalMapsPlugin;
 import net.osmand.plus.profiles.SelectCopyAppModeBottomSheet;
@@ -49,13 +50,10 @@ import net.osmand.plus.skimapsplugin.SkiMapsPlugin;
 import org.apache.commons.logging.Log;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import static net.osmand.plus.UiUtilities.CompoundButtonType.TOOLBAR;
-import static net.osmand.plus.profiles.EditProfileFragment.MAP_CONFIG;
-import static net.osmand.plus.profiles.EditProfileFragment.OPEN_CONFIG_ON_MAP;
-import static net.osmand.plus.profiles.EditProfileFragment.SCREEN_CONFIG;
-import static net.osmand.plus.profiles.EditProfileFragment.SELECTED_ITEM;
 
 public class ConfigureProfileFragment extends BaseSettingsFragment implements CopyAppModePrefsListener, ResetAppModePrefsListener {
 
@@ -93,7 +91,7 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 
 		TextView toolbarTitle = view.findViewById(R.id.toolbar_title);
 		toolbarTitle.setTypeface(FontCache.getRobotoMedium(view.getContext()));
-		toolbarTitle.setText(getSelectedAppMode().toHumanString(getContext()));
+		toolbarTitle.setText(getSelectedAppMode().toHumanString());
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			float letterSpacing = AndroidUtils.getFloatValueFromRes(view.getContext(), R.dimen.title_letter_spacing);
 			toolbarTitle.setLetterSpacing(letterSpacing);
@@ -103,20 +101,16 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 		toolbarSubtitle.setText(R.string.configure_profile);
 		toolbarSubtitle.setVisibility(View.VISIBLE);
 
-		if (!getSelectedAppMode().equals(ApplicationMode.DEFAULT)) {
-			view.findViewById(R.id.toolbar_switch_container).setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					ApplicationMode selectedMode = getSelectedAppMode();
-					List<ApplicationMode> availableAppModes = ApplicationMode.values(getMyApplication());
-					boolean isChecked = availableAppModes.contains(selectedMode);
-					ApplicationMode.changeProfileAvailability(selectedMode, !isChecked, getMyApplication());
-					updateToolbarSwitch();
-				}
-			});
-		} else {
-			view.findViewById(R.id.switchWidget).setVisibility(View.GONE);
-		}
+		view.findViewById(R.id.toolbar_switch_container).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				ApplicationMode selectedMode = getSelectedAppMode();
+				List<ApplicationMode> availableAppModes = ApplicationMode.values(getMyApplication());
+				boolean isChecked = availableAppModes.contains(selectedMode);
+				ApplicationMode.changeProfileAvailability(selectedMode, !isChecked, getMyApplication());
+				updateToolbarSwitch();
+			}
+		});
 	}
 
 	@Override
@@ -146,13 +140,23 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 	@Override
 	protected void updateToolbar() {
 		super.updateToolbar();
-		updateToolbarSwitch();
+		View view = getView();
+		if (view != null) {
+			updateToolbarSwitch();
+			TextView toolbarTitle = view.findViewById(R.id.toolbar_title);
+			toolbarTitle.setText(getSelectedAppMode().toHumanString());
+
+			boolean visible = !getSelectedAppMode().equals(ApplicationMode.DEFAULT);
+			AndroidUiHelper.updateVisibility(view.findViewById(R.id.switchWidget), visible);
+		}
 	}
 
 	@Override
 	public void copyAppModePrefs(ApplicationMode appMode) {
 		if (appMode != null) {
-			app.getSettings().copyPreferencesFromProfile(appMode, getSelectedAppMode());
+			ApplicationMode selectedAppMode = getSelectedAppMode();
+			app.getSettings().copyPreferencesFromProfile(appMode, selectedAppMode);
+			updateCopiedOrResetPrefs();
 		}
 	}
 
@@ -160,6 +164,19 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 	public void resetAppModePrefs(ApplicationMode appMode) {
 		if (appMode != null) {
 			app.getSettings().resetPreferencesForProfile(appMode);
+			app.showToastMessage(R.string.profile_prefs_reset_successful);
+			updateCopiedOrResetPrefs();
+		}
+	}
+
+	private void updateCopiedOrResetPrefs() {
+		MapActivity mapActivity = getMapActivity();
+		if (mapActivity != null) {
+			app.getPoiFilters().loadSelectedPoiFilters();
+			mapActivity.getMapLayers().getMapWidgetRegistry().updateVisibleWidgets();
+			mapActivity.updateApplicationModeSettings();
+			updateToolbar();
+			updateAllSettings();
 		}
 	}
 
@@ -248,7 +265,7 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 
 		Intent intent = new Intent(ctx, MapActivity.class);
 		intent.putExtra(OPEN_CONFIG_ON_MAP, MAP_CONFIG);
-		intent.putExtra(SELECTED_ITEM, getSelectedAppMode().getStringKey());
+		intent.putExtra(APP_MODE_KEY, getSelectedAppMode().getStringKey());
 		configureMap.setIntent(intent);
 	}
 
@@ -262,7 +279,7 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 
 		Intent intent = new Intent(ctx, MapActivity.class);
 		intent.putExtra(OPEN_CONFIG_ON_MAP, SCREEN_CONFIG);
-		intent.putExtra(SELECTED_ITEM, getSelectedAppMode().getStringKey());
+		intent.putExtra(APP_MODE_KEY, getSelectedAppMode().getStringKey());
 		configureMap.setIntent(intent);
 	}
 
@@ -309,7 +326,7 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 			Context ctx = requireContext();
 			final Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
-			sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.exported_osmand_profile, profile.toHumanString(ctx)));
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.exported_osmand_profile, profile.toHumanString()));
 			sendIntent.putExtra(Intent.EXTRA_STREAM, AndroidUtils.getUriForFile(getMyApplication(), file));
 			sendIntent.setType("*/*");
 			sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -384,7 +401,7 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 			if (!tempDir.exists()) {
 				tempDir.mkdirs();
 			}
-			String fileName = profile.toHumanString(ctx);
+			String fileName = profile.toHumanString();
 			app.getSettingsHelper().exportSettings(tempDir, fileName, new SettingsHelper.SettingsExportListener() {
 				@Override
 				public void onSettingsExportFinished(@NonNull File file, boolean succeed) {
@@ -410,15 +427,14 @@ public class ConfigureProfileFragment extends BaseSettingsFragment implements Co
 				bld.setTitle(R.string.profile_alert_delete_title);
 				bld.setMessage(String
 						.format(getString(R.string.profile_alert_delete_msg),
-								profile.getCustomProfileName()));
+								profile.getUserProfileName()));
 				bld.setPositiveButton(R.string.shared_string_delete,
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								OsmandApplication app = getMyApplication();
 								if (app != null) {
-									ApplicationMode.deleteCustomMode(ApplicationMode.valueOfStringKey(profile.getStringKey(), ApplicationMode.DEFAULT), app);
-									app.getSettings().APPLICATION_MODE.set(ApplicationMode.DEFAULT);
+									ApplicationMode.deleteCustomModes(Collections.singletonList(profile), app);
 								}
 
 								if (getActivity() != null) {

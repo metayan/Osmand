@@ -48,6 +48,7 @@ import net.osmand.data.TransportStop;
 import net.osmand.osm.PoiCategory;
 import net.osmand.osm.PoiFilter;
 import net.osmand.osm.PoiType;
+import net.osmand.osm.edit.OsmMapUtils;
 import net.osmand.plus.ContextMenuAdapter;
 import net.osmand.plus.ContextMenuItem;
 import net.osmand.plus.OsmandApplication;
@@ -209,16 +210,12 @@ public class ContextMenuLayer extends OsmandMapLayer {
 				markerCustomized = true;
 			}
 			if (x != null && y != null && x.size() > 2) {
-				double lat = MapUtils.get31LatitudeY(y.get(0));
-				double lon = MapUtils.get31LongitudeX(x.get(0));
-				int px, py, prevX, prevY;
-				prevX = (int) box.getPixXFromLatLon(lat, lon);
-				prevY = (int) box.getPixYFromLatLon(lat, lon);
+				float px, py, prevX, prevY;
+				prevX = box.getPixXFrom31(x.get(0), y.get(0));
+				prevY = box.getPixYFrom31(x.get(0), y.get(0));
 				for (int i = 1; i < x.size(); i++) {
-					lat = MapUtils.get31LatitudeY(y.get(i));
-					lon = MapUtils.get31LongitudeX(x.get(i));
-					px = (int) box.getPixXFromLatLon(lat, lon);
-					py = (int) box.getPixYFromLatLon(lat, lon);
+					px = box.getPixXFrom31(x.get(i), y.get(i));
+					py = box.getPixYFrom31(x.get(i), y.get(i));
 					canvas.drawLine(prevX, prevY, px, py, outlinePaint);
 					prevX = px;
 					prevY = py;
@@ -681,10 +678,8 @@ public class ContextMenuLayer extends OsmandMapLayer {
 			RenderingContext rc = maps.getVisibleRenderingContext();
 			RenderedObject[] renderedObjects = null;
 			if (rc != null && rc.zoom == tileBox.getZoom()) {
-				double lat = MapUtils.get31LatitudeY((int) (rc.topY * rc.tileDivisor));
-				double lon = MapUtils.get31LongitudeX((int) (rc.leftX * rc.tileDivisor));
-				float x = tileBox.getPixXFromLatLon(lat, lon);
-				float y = tileBox.getPixYFromLatLon(lat, lon);
+				float x = tileBox.getPixXFrom31((int) (rc.leftX * rc.tileDivisor), (int) (rc.topY * rc.tileDivisor));
+				float y = tileBox.getPixYFrom31((int) (rc.leftX * rc.tileDivisor), (int) (rc.topY * rc.tileDivisor));
 				renderedObjects = nativeLib.searchRenderedObjectsFromContext(rc, (int) (point.x - x), (int) (point.y - y));
 			}
 			if (renderedObjects != null) {
@@ -692,15 +687,19 @@ public class ContextMenuLayer extends OsmandMapLayer {
 				double cosRotateTileSize = Math.cos(Math.toRadians(rc.rotate)) * TILE_SIZE;
 				double sinRotateTileSize = Math.sin(Math.toRadians(rc.rotate)) * TILE_SIZE;
 				for (RenderedObject r : renderedObjects) {
-					double cx = r.getBbox().centerX();
-					double cy = r.getBbox().centerY();
-					double dTileX = (cx * cosRotateTileSize + cy * sinRotateTileSize) / (TILE_SIZE * TILE_SIZE);
-					double dTileY = (cy * cosRotateTileSize - cx * sinRotateTileSize) / (TILE_SIZE * TILE_SIZE);
-					int x31 = (int) ((dTileX + rc.leftX) * rc.tileDivisor);
-					int y31 = (int) ((dTileY + rc.topY) * rc.tileDivisor);
-					double lat = MapUtils.get31LatitudeY(y31);
-					double lon = MapUtils.get31LongitudeX(x31);
-					r.setLabelLatLon(new LatLon(lat, lon));
+					if (r.getLabelX() != 0 && r.getLabelY() != 0) {
+						r.setLabelLatLon(new LatLon(MapUtils.get31LatitudeY(r.getLabelY()), MapUtils.get31LongitudeX(r.getLabelX())));
+					} else {
+						double cx = r.getBbox().centerX();
+						double cy = r.getBbox().centerY();
+						double dTileX = (cx * cosRotateTileSize + cy * sinRotateTileSize) / (TILE_SIZE * TILE_SIZE);
+						double dTileY = (cy * cosRotateTileSize - cx * sinRotateTileSize) / (TILE_SIZE * TILE_SIZE);
+						int x31 = (int) ((dTileX + rc.leftX) * rc.tileDivisor);
+						int y31 = (int) ((dTileY + rc.topY) * rc.tileDivisor);
+						double lat = MapUtils.get31LatitudeY(y31);
+						double lon = MapUtils.get31LongitudeX(x31);
+						r.setLabelLatLon(new LatLon(lat, lon));
+					}
 				}
 				for (RenderedObject renderedObject : renderedObjects) {
 					if (renderedObject.getX() != null && renderedObject.getX().size() == 1

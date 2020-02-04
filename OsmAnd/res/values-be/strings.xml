@@ -1055,8 +1055,8 @@
     <string name="filter_current_poiButton">Фільтраваць</string>
     <string name="edit_filter_save_as_menu_item">Захаваць як</string>
     <string name="edit_filter_delete_dialog_title">Выдаліць абраны фільтр?</string>
-    <string name="edit_filter_delete_message">Фільтр {0} быў выдалены</string>
-    <string name="edit_filter_create_message">Фільтр {0} быў створаны</string>
+    <string name="edit_filter_delete_message">Фільтр %1$s быў выдалены</string>
+    <string name="edit_filter_create_message">Фільтр %1$s быў створаны</string>
     <string name="email">e-mail</string>
     <string name="av_camera_focus">Тып факусавання камеры</string>
     <string name="av_camera_focus_descr">Абярыце тып фокусу ўбудаванай камеры.</string>
@@ -3360,7 +3360,7 @@
     <string name="add_new_profile_q">Дадаць новы профіль \"%1$s\"\?</string>
     <string name="save_heading">Захоўваць кірунак</string>
     <string name="save_heading_descr">Падчас запісу захоўваць кірунак для кожнага пункта маршруту.</string>
-    <string name="distance_and_address">%1$s • %2$s</string>
+    <string name="ltr_or_rtl_combine_via_bold_point">%1$s • %2$s</string>
     <string name="street_city">%1$s, %2$s</string>
     <string name="personal_category_name">Асабісты</string>
     <string name="shared_string_downloading_formatted">Спампоўванне %s</string>

@@ -698,8 +698,8 @@
     <string name="filter_current_poiButton">Filter</string>
     <string name="edit_filter_save_as_menu_item">Uložiť ako</string>
     <string name="edit_filter_delete_dialog_title">Vymazať vybraný filter?</string>
-    <string name="edit_filter_delete_message">Filter {0} bol zmazaný</string>
-    <string name="edit_filter_create_message">Filter {0} bol vytvorený</string>
+    <string name="edit_filter_delete_message">Filter %1$s bol zmazaný</string>
+    <string name="edit_filter_create_message">Filter %1$s bol vytvorený</string>
     <string name="unknown_from_location">Štartovací bod nebol zatiaľ zistený</string>
     <string name="confirm_interrupt_download">Zrušiť sťahovanie súboru?</string>
     <string name="basemap_was_selected_to_download">Základná bola vybratá na stiahnutie, aby mohla aplikácia fungovať.</string>
@@ -3382,7 +3382,7 @@ Zodpovedá oblasti: %1$s x %2$s</string>
     <string name="add_new_profile_q">Pridať nový profil \'%1$s\'\?</string>
     <string name="save_heading">Pridať nadpis</string>
     <string name="save_heading_descr">Pridať nadpis ku každému bodu trasy pri zázname.</string>
-    <string name="distance_and_address">%1$s • %2$s</string>
+    <string name="ltr_or_rtl_combine_via_bold_point">%1$s • %2$s</string>
     <string name="street_city">%1$s, %2$s</string>
     <string name="personal_category_name">Osobné</string>
     <string name="shared_string_downloading_formatted">Sťahujem %s</string>
@@ -3418,7 +3418,7 @@ Zodpovedá oblasti: %1$s x %2$s</string>
     <string name="live_monitoring_descr">Umožňuje zdieľanie polohy a zaznamenávanie výletu.</string>
     <string name="live_monitoring">Sledovanie online</string>
     <string name="save_track_logging_accuracy">Presnosť záznamu</string>
-    <string name="tracks_view_descr">Všetky vaše zaznamenané stopy sú v \'Menu\' → \'Moje miesta\' → \'Stopy\', alebo v priečinku OsmAnd.</string>
+    <string name="tracks_view_descr">Všetky vaše zaznamenané stopy sú v %1$s, alebo v priečinku OsmAnd.</string>
     <string name="multimedia_notes_view_descr">Všetky vaše OSM poznámky sú v \'Menu\' → \'Moje miesta\' → \'Zmeny v OSM\'.</string>
     <string name="video_notes">Video-poznámky</string>
     <string name="photo_notes">Foto-poznámky</string>
@@ -3433,4 +3433,7 @@ Zodpovedá oblasti: %1$s x %2$s</string>
     <string name="select_map_icon_descr">Mapová ikona zobrazená len na mape.</string>
     <string name="logcat_buffer_descr">Skontrolovať a zdieľať podrobné záznamy aplikácie</string>
     <string name="search_offline_geo_error">Nepodarilo sa prečítať geo správu \'%s\'.</string>
+    <string name="permission_is_required">Pre použitie tejto možnosti je potrebné oprávnenie.</string>
+    <string name="monitoring_min_speed_descr">Tento filter spôsobí nezaznamenávanie bodov pri pohybe pomalšie ako daná rýchlosť. Toto môže zabezpečiť plynulejšie zaznamenané stopy pri zobrazení na mape.</string>
+    <string name="monitoring_min_speed_descr_side_effect">Vedľajší efekt: Vaša stopa nebude obsahovať úseky kde nebola dosiahnutá minimálna rýchlosť (napr. kde ste tlačili bicykel do kopca). Taktiež nebudú obsahovať informáciu o obdobiach bez pohybu, napr. prestávkach. Toto má vplyv na následnú analýzu alebo spracovanie, napr. pri zisťovaní celkovej dĺžky výletu, času v pohybe alebo priemernej rýchlosti.</string>
 </resources>
