@@ -11,6 +11,12 @@
 	Thx - Hardy
 
 -->
+    <string name="please_provide_profile_name_message">Please provide a name for the profile</string>
+    <string name="open_settings">Open settings</string>
+    <string name="plugin_disabled">Plugin disabled</string>
+    <string name="plugin_disabled_descr">This plugin is a separate application, you will need to remove it separately if you no longer plan to use it.\n\nThe plugin will remain on the device after removing OsmAnd.</string>
+    <string name="shared_string_menu">Menu</string>
+    <string name="ltr_or_rtl_triple_combine_via_dash">%1$s — %2$s — %3$s</string>
     <string name="routing_profile_direct_to">Direct-to-point</string>
     <string name="clear_recorded_data">Clear recorded data</string>
     <string name="release_3_6">
@@ -43,6 +49,11 @@
     <string name="ltr_or_rtl_combine_via_slash">%1$s/%2$s</string>
     <string name="sunset_at">Sunset at %1$s</string>
     <string name="sunrise_at">Sunrise at %1$s</string>
+    <string name="shared_string_routing">Routing</string>
+    <string name="shared_string_custom_rendering_style">Custom rendering style</string>
+    <string name="shared_string_include_data">Include additional data</string>
+    <string name="import_profile_dialog_description">The imported profile contains additional data. Click Import to import only profile data or select additional data to import.</string>
+    <string name="export_profile_dialog_description">You can select additional data to export along with the profile.</string>
     <string name="permission_is_required">Permission is required to use this option.</string>
     <string name="logcat_buffer_descr">Check and share detailed logs of the application</string>
     <string name="file_does_not_contain_routing_rules">No routing rules in \'%1$s\'. Please choose another file.</string>
@@ -66,9 +77,6 @@
     <string name="monitoring_min_speed">Minimum speed</string>
     <string name="monitoring_min_accuracy">Minimum accuracy</string>
     <string name="monitoring_min_distance">Minimum displacement</string>
-    <string name="tracks_view_path">Menu — My places — Tracks</string>
-    <string name="multimedia_notes_view_path">Menu — My places — Notes</string>
-    <string name="osm_edits_view_path">Menu — My places — OSM Edits</string>
     <string name="reset_plugin_to_default">Reset plugin settings to default</string>
     <string name="multimedia_rec_split_title">Recorder split</string>
     <string name="multimedia_use_system_camera">Use system app</string>
@@ -2794,6 +2802,7 @@
     <string name="index_name_africa">Africa</string>
     <string name="index_name_asia">Asia</string>
     <string name="index_name_oceania">Australia and Oceania</string>
+    <string name="index_name_antarctica">Antarctica</string>
     <string name="index_name_other">Worldwide and topic maps</string>
     <string name="index_name_wiki">Worldwide Wikipedia POIs</string>
     <string name="index_name_voice">Voice prompts (recorded, limited features)</string>

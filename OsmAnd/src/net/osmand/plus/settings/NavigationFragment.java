@@ -51,12 +51,6 @@ public class NavigationFragment extends BaseSettingsFragment {
 	}
 
 	@Override
-	protected void createToolbar(LayoutInflater inflater, View view) {
-		super.createToolbar(inflater, view);
-		view.findViewById(R.id.profile_button).setVisibility(View.GONE);
-	}
-
-	@Override
 	protected void setupPreferences() {
 		navigationType = findPreference(NAVIGATION_TYPE);
 		setupNavigationTypePref();
@@ -118,6 +112,7 @@ public class NavigationFragment extends BaseSettingsFragment {
 			}
 			bundle.putString(DIALOG_TYPE, TYPE_NAV_PROFILE);
 			dialog.setArguments(bundle);
+			dialog.setUsedOnMap(false);
 			if (getActivity() != null) {
 				getActivity().getSupportFragmentManager().beginTransaction()
 						.add(dialog, "select_nav_type").commitAllowingStateLoss();
