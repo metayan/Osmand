@@ -328,9 +328,10 @@ public class OsmandMonitoringPlugin extends OsmandPlugin {
 						startGPXMonitoring(activity, showTrackSelection);
 					}
 				} else if (item == R.string.clear_recorded_data) {
-					AlertDialog.Builder builder = new AlertDialog.Builder(UiUtilities.getThemedContext(activity, nightMode));
-					builder.setTitle(R.string.are_you_sure);
-					builder.setMessage(R.string.clear_recorded_data);
+					final boolean dialogNightMode = nightMode;
+					AlertDialog.Builder builder = new AlertDialog.Builder(UiUtilities.getThemedContext(activity, dialognightMode));
+					builder.setTitle(R.string.clear_recorded_data);
+					builder.setMessage(R.string.are_you_sure);
 					builder.setNegativeButton(R.string.shared_string_cancel, null).setPositiveButton(
 							R.string.shared_string_ok, new DialogInterface.OnClickListener() {
 								@Override
