@@ -157,7 +157,7 @@ public class OsmandMonitoringPlugin extends OsmandPlugin {
 	
 	public static final int[] SECONDS = new int[] {0, 1, 2, 3, 5, 10, 15, 30, 60, 90};
 	public static final int[] MINUTES = new int[] {2, 3, 5};
-	public static final int[] MAX_INTERVAL_TO_SEND_MINUTES = new int[] {1, 2, 5, 10, 15, 20, 30, 60};
+	public static final int[] MAX_INTERVAL_TO_SEND_MINUTES = new int[] {1, 2, 5, 10, 15, 20, 30, 60, 120, 180, 300, 600};
 
 	
 	@Override
